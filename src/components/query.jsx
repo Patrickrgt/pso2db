@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import * as firebase from "firebase";
 import { db } from "../store/firebase.js";
 import { Container, Row, Col } from "react-bootstrap";
 import logo from "../img/arksLogo.png";
@@ -225,7 +224,7 @@ class Query extends Component {
       });
 
     let groupItemObj = [];
-    let groupItemTitles = [];
+
     let deconsGroupItemTitle = Object.keys([this.state.groupItems][0]);
     let deconsGroupItemImage = Object.values([this.state.groupItems][0]);
 
@@ -253,7 +252,7 @@ class Query extends Component {
   scratchGroups() {
     var groupBox = document.getElementById("groupCheckBox");
 
-    if (groupBox.checked == true) {
+    if (groupBox.checked === true) {
       this.setState({
         loadData: false,
         acScratch: true,
@@ -323,6 +322,7 @@ class Query extends Component {
                   .map((filteredItem) => (
                     <Col xs="6" md="3">
                       <img
+                        alt={filteredItem.itemTitleObj}
                         className="item-image"
                         src={filteredItem.itemImageObj}
                       />
@@ -347,7 +347,11 @@ class Query extends Component {
                     >
                       {this.state.objPage.map((item, i) => (
                         <Col xs="6" md="3">
-                          <img className="item-image" src={item.itemImageObj} />
+                          <img
+                            alt={item.itemTitleObj}
+                            className="item-image"
+                            src={item.itemImageObj}
+                          />
 
                           <h1 className="item-title">{item.itemTitleObj}</h1>
                         </Col>
@@ -363,6 +367,7 @@ class Query extends Component {
                         {this.state.groupObjs.map((scratch, i) => (
                           <Col xs="6" md="6">
                             <img
+                              alt={scratch.scratchTitleObj}
                               onClick={() =>
                                 this.groupScratch(scratch.scratchTitleObj)
                               }
@@ -385,6 +390,7 @@ class Query extends Component {
                             {this.state.groupItemObjs.map((group, i) => (
                               <Col xs="6" md="3">
                                 <img
+                                  alt={group.scratchTitleObj}
                                   className="item-image"
                                   src={group.scratchImageObj}
                                 />
