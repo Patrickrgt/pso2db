@@ -26,8 +26,6 @@ class Query extends Component {
       page: 0,
       filterTabs: ["Scratch Groups", "Basewear", "Accessories", "Camo"],
       filterFunctions: ["groupCheckBox", "groupTest", "x", "y"],
-      filteredSplitObjs: [],
-      filteredObjPage: [],
     };
   }
 
@@ -160,10 +158,7 @@ class Query extends Component {
 
   async useEffect(page) {
     let newPage = this.state.page + 1;
-    if (
-      this.state.splitObjs.length === newPage ||
-      this.state.splitObjs.length === 0
-    ) {
+    if (this.state.splitObjs.length === newPage) {
       return;
     } else {
       await this.setState(
@@ -179,43 +174,32 @@ class Query extends Component {
     }
   }
 
-  searchItem = async (e) => {
+  // useEffect = (page) => {
+  //   if (this.state.splitObjs.length === page - 1) {
+  //     return;
+  //   } else {
+  //     this.setState(
+  //       {
+  //         objPage: [...this.state.objPage, ...this.state.splitObjs[page]],
+  //       },
+  //       () => {
+  //         console.log(this.state.objPage);
+  //       }
+  //     );
+  //   }
+  // }
+
+  searchItem = (e) => {
     this.setState(
       {
         itemQuery: e.target.value.toLowerCase(),
         queryLoad: true,
       },
       () => {
-        console.log(this.state.splitObjs.length);
-        console.log(this.state.page);
+        console.log(this.state.itemQuery);
+        console.log(this.state.itemQuery.length);
       }
     );
-
-    {
-      this.setState(
-        {
-          filteredSplitObjs: this.splitArray(
-            this.state.itemObjects.filter((query) =>
-              query.itemTitleObj.toLowerCase().includes(this.state.itemQuery)
-            ),
-            24
-          ),
-        },
-        () => {
-          if (this.state.filteredSplitObjs[0] !== undefined) {
-            this.setState(
-              {
-                filteredObjPage: this.state.filteredSplitObjs[0],
-              },
-              () => {
-                console.log(this.state.splitObjs);
-                console.log(this.state.objPage);
-              }
-            );
-          } else return;
-        }
-      );
-    }
   };
 
   async groupScratch(scratch) {
@@ -335,26 +319,25 @@ class Query extends Component {
           {this.state.itemQuery.length > 0 ? (
             <Container fluid className="item-container">
               <Row>
-                <InfiniteScroll
-                  dataLength={this.state.filteredObjPage.length}
-                  hasMore={true}
-                  next={() => this.useEffect(this.state.page + 1)}
-                  className="flex flex-wrap"
-                >
-                  {this.state.filteredObjPage.map((filteredItem) => (
+                {this.state.itemObjects
+                  .filter((query) =>
+                    query.itemTitleObj
+                      .toLowerCase()
+                      .includes(this.state.itemQuery)
+                  )
+                  .map((filteredItem) => (
                     <Col xs="6" md="3">
                       <img
                         alt={filteredItem.itemTitleObj}
                         className="item-image"
                         src={filteredItem.itemImageObj}
                       />
-
                       <h1 className="item-title">
                         {filteredItem.itemTitleObj}
                       </h1>
+                      {/* <img src={item.itemImageObj} /> */}
                     </Col>
                   ))}
-                </InfiniteScroll>
               </Row>
             </Container>
           ) : (

@@ -1,13 +1,23 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
+@import url("https://use.typekit.net/nbh2lgw.css");
+@import url("https://fonts.googleapis.com/css2?family=Cinzel&display=swap");
+
+body {
+  font-family: montserrat, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
 img {
   cursor: pointer;
 }
 
 .flex {
-  display: flex
+  display: flex;
 }
 
 .flex-wrap {
-  flex-wrap: wrap
+  flex-wrap: wrap;
 }
 
 .logo-container {
@@ -36,6 +46,8 @@ img {
   width: 100%;
   height: 3vw;
   font-size: 2vw;
+  letter-spacing: 0.5vw;
+  text-indent: 1vw;
 }
 
 .search-container {
@@ -53,21 +65,105 @@ img {
   top: 2.5vw;
   height: 3vw;
   z-index: 1;
+  font-family: "Cinzel", serif;
 }
 
-.checkbox-input {
+/* .checkbox-input-scratch {
   z-index: 1;
   position: fixed;
-  top: 3.75vw;
+  top: 6.6vw;
   right: 3.5vw;
 }
 
-.checkbox-text {
+.checkbox-input-camo {
   z-index: 1;
   position: fixed;
-  top: 3.5vw;
+  top: 6.6vw;
+  right: 23.5vw;
+}
+
+.checkbox-input-basewear {
+  z-index: 1;
+  position: fixed;
+  top: 6.6vw;
+  right: 34.5vw;
+}
+
+.checkbox-input-accessories {
+  z-index: 1;
+  position: fixed;
+  top: 6.6vw;
+  right: 49.5vw;
+} */
+
+.checkbox-styling {
+  margin-left: 0.5vw;
+}
+
+.checkbox-text-styling {
+  display: inline-block;
+  font-size: 2vw;
+  font-family: montserrat, sans-serif;
+  font-weight: 600;
+}
+
+.checkbox-text-scratch {
+  z-index: 1;
+  position: fixed;
+  top: 5.5vw;
+  left: 10vw;
+  text-indent: 1vw;
+  background-color: #231815;
+  color: white;
+  width: 100%;
+}
+
+.checkbox-text-camo {
+  z-index: 1;
+  position: fixed;
+  top: 5.5vw;
+  right: 25vw;
+  background-color: #231815;
+  color: white;
+  font-size: 2vw;
+  font-family: montserrat, sans-serif;
+  font-weight: 600;
+}
+
+.checkbox-text-basewear {
+  z-index: 1;
+  position: fixed;
+  top: 5.5vw;
+  right: 36vw;
+  background-color: #231815;
+  color: white;
+  font-size: 2vw;
+  font-family: montserrat, sans-serif;
+  font-weight: 600;
+}
+
+.checkbox-text-accessories {
+  z-index: 1;
+  position: fixed;
+  top: 5.5vw;
+  right: 51vw;
+  background-color: #231815;
+  color: white;
+  font-size: 2vw;
+  font-family: montserrat, sans-serif;
+  font-weight: 600;
+}
+
+.filter-container {
+  z-index: 1;
+  position: fixed;
+  top: 5.5vw;
   right: 5vw;
-  color: black;
+  background-color: #231815;
+  color: white;
+  font-size: 2vw;
+  font-family: montserrat, sans-serif;
+  font-weight: 600;
 }
 
 .item-container {
