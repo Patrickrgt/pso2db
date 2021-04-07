@@ -212,31 +212,29 @@ class Query extends Component {
       }
     );
 
-    {
-      this.setState(
-        {
-          filteredSplitObjs: this.splitArray(
-            this.state.itemObjects.filter((query) =>
-              query.itemTitleObj.toLowerCase().includes(this.state.itemQuery)
-            ),
-            24
+    this.setState(
+      {
+        filteredSplitObjs: this.splitArray(
+          this.state.itemObjects.filter((query) =>
+            query.itemTitleObj.toLowerCase().includes(this.state.itemQuery)
           ),
-        },
-        () => {
-          if (this.state.filteredSplitObjs[0] !== undefined) {
-            this.setState(
-              {
-                filteredObjPage: this.state.filteredSplitObjs[0],
-              },
-              () => {
-                console.log(this.state.splitObjs);
-                console.log(this.state.objPage);
-              }
-            );
-          } else return;
-        }
-      );
-    }
+          24
+        ),
+      },
+      () => {
+        if (this.state.filteredSplitObjs[0] !== undefined) {
+          this.setState(
+            {
+              filteredObjPage: this.state.filteredSplitObjs[0],
+            },
+            () => {
+              console.log(this.state.splitObjs);
+              console.log(this.state.objPage);
+            }
+          );
+        } else return;
+      }
+    );
   };
 
   // async groupBasewear() {
