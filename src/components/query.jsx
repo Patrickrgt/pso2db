@@ -24,8 +24,8 @@ class Query extends Component {
       splitObjs: [],
       objPage: [],
       page: 0,
-      filterTabs: ["Scratch Groups", "Basewear", "Accessories", "Camo"],
-      filterFunctions: ["groupCheckBox", "groupTest", "x", "y"],
+      filterTabs: ["Scratch Groups"],
+      filterFunctions: ["groupCheckBox"],
       filteredSplitObjs: [],
       filteredObjPage: [],
     };
@@ -160,10 +160,7 @@ class Query extends Component {
 
   async useEffect(page) {
     let newPage = this.state.page + 1;
-    if (
-      this.state.splitObjs.length === newPage ||
-      this.state.splitObjs.length === 0
-    ) {
+    if (this.state.splitObjs.length === newPage) {
       return;
     } else {
       await this.setState(
@@ -173,6 +170,30 @@ class Query extends Component {
         },
         () => {
           console.log(this.state.splitObjs.length);
+          console.log(this.state.page);
+        }
+      );
+    }
+  }
+
+  async filterEffect(page) {
+    let newPage = this.state.page + 1;
+    if (
+      (await Math.ceil(this.state.filteredSplitObjs.length)) === newPage ||
+      this.state.filteredSplitObjs.length === 0
+    ) {
+      return;
+    } else {
+      await this.setState(
+        {
+          page: newPage,
+          filteredObjPage: [
+            ...this.state.filteredObjPage,
+            ...this.state.filteredSplitObjs[page],
+          ],
+        },
+        () => {
+          console.log(this.state.filteredObjPage.length);
           console.log(this.state.page);
         }
       );
@@ -217,6 +238,45 @@ class Query extends Component {
       );
     }
   };
+
+  // async groupBasewear() {
+  //   this.setState(
+  //     {
+  //       itemQuery: "Basewear",
+  //       queryLoad: true,
+  //     },
+  //     () => {
+  //       console.log(this.state.splitObjs.length);
+  //       console.log(this.state.page);
+  //     }
+  //   );
+  // }
+
+  // async groupAccessories() {
+  //   this.setState(
+  //     {
+  //       itemQuery: "Camo",
+  //       queryLoad: true,
+  //     },
+  //     () => {
+  //       console.log(this.state.splitObjs.length);
+  //       console.log(this.state.page);
+  //     }
+  //   );
+  // }
+
+  // async groupCamo() {
+  //   this.setState(
+  //     {
+  //       itemQuery: "Camo",
+  //       queryLoad: true,
+  //     },
+  //     () => {
+  //       console.log(this.state.splitObjs.length);
+  //       console.log(this.state.page);
+  //     }
+  //   );
+  // }
 
   async groupScratch(scratch) {
     console.log(scratch);
@@ -269,12 +329,21 @@ class Query extends Component {
 
   scratchGroups() {
     var groupBox = document.getElementById("groupCheckBox");
+    // var groupBasewear = document.getElementById("groupBasewear");
+    // var groupAccessories = document.getElementById("groupAccessories");
+    // var groupCamo = document.getElementById("groupCamo");
 
     if (groupBox.checked === true) {
       this.setState({
         loadData: false,
         acScratch: true,
       });
+      // } else if (groupBasewear.checked === true) {
+      //   return this.groupBasewear();
+      // } else if (groupAccessories.checked === true) {
+      //   return this.groupAccessories();
+      // } else if (groupCamo.checked === true) {
+      //   return this.groupCamo();
     } else {
       this.setState({
         loadData: true,
@@ -334,53 +403,47 @@ class Query extends Component {
 
           {this.state.itemQuery.length > 0 ? (
             <Container fluid className="item-container">
-              <Row>
-                <InfiniteScroll
-                  dataLength={this.state.filteredObjPage.length}
-                  hasMore={true}
-                  next={() => this.useEffect(this.state.page + 1)}
-                  className="flex flex-wrap"
-                >
-                  {this.state.filteredObjPage.map((filteredItem) => (
-                    <Col xs="6" md="3">
-                      <img
-                        alt={filteredItem.itemTitleObj}
-                        className="item-image"
-                        src={filteredItem.itemImageObj}
-                      />
+              <InfiniteScroll
+                dataLength={this.state.filteredObjPage.length}
+                hasMore={true}
+                next={() => this.filterEffect(this.state.page + 1)}
+                className="flex flex-wrap"
+              >
+                {this.state.filteredObjPage.map((filteredItem, index) => (
+                  <div className="col-cus">
+                    <img
+                      alt={filteredItem.itemTitleObj}
+                      className="item-image"
+                      src={filteredItem.itemImageObj}
+                    />
 
-                      <h1 className="item-title">
-                        {filteredItem.itemTitleObj}
-                      </h1>
-                    </Col>
-                  ))}
-                </InfiniteScroll>
-              </Row>
+                    <h1 className="item-title">{filteredItem.itemTitleObj}</h1>
+                  </div>
+                ))}
+              </InfiniteScroll>
             </Container>
           ) : (
             <div>
               {this.state.loadData === true ? (
                 <Container fluid className="item-container">
-                  <Row>
-                    <InfiniteScroll
-                      dataLength={this.state.objPage.length}
-                      hasMore={true}
-                      next={() => this.useEffect(this.state.page + 1)}
-                      className="flex flex-wrap"
-                    >
-                      {this.state.objPage.map((item, i) => (
-                        <Col xs="6" md="3">
-                          <img
-                            alt={item.itemTitleObj}
-                            className="item-image"
-                            src={item.itemImageObj}
-                          />
+                  <InfiniteScroll
+                    dataLength={this.state.objPage.length}
+                    hasMore={true}
+                    next={() => this.useEffect(this.state.page + 1)}
+                    className="flex flex-wrap"
+                  >
+                    {this.state.objPage.map((item, i) => (
+                      <div className="col-cus">
+                        <img
+                          alt={item.itemTitleObj}
+                          className="item-image"
+                          src={item.itemImageObj}
+                        />
 
-                          <h1 className="item-title">{item.itemTitleObj}</h1>
-                        </Col>
-                      ))}
-                    </InfiniteScroll>
-                  </Row>
+                        <h1 className="item-title">{item.itemTitleObj}</h1>
+                      </div>
+                    ))}
+                  </InfiniteScroll>
                 </Container>
               ) : (
                 <div>

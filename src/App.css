@@ -2,6 +2,23 @@
 @import url("https://use.typekit.net/nbh2lgw.css");
 @import url("https://fonts.googleapis.com/css2?family=Cinzel&display=swap");
 
+html {
+  overflow-y: scroll;
+}
+
+body::-webkit-scrollbar {
+  width: 0.5em;
+}
+
+body::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
+}
+
 body {
   font-family: montserrat, sans-serif;
   font-weight: 400;
@@ -167,7 +184,7 @@ img {
 }
 
 .item-container {
-  padding-top: 6vw;
+  padding-top: 9vw;
 }
 
 .item-title {
@@ -176,9 +193,14 @@ img {
 }
 
 .item-image {
-  padding-top: 1vw;
-  width: 70%;
+  max-width: 70%;
+  min-width: 70%;
   margin: auto;
   text-align: center;
   display: block;
+}
+
+.col-cus {
+  max-width: 25%;
+  min-width: 25%;
 }
