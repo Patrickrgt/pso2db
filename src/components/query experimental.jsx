@@ -240,13 +240,6 @@ class Query extends Component {
   }
 
   scratchGroups() {
-    this.setState({
-      itemQuery: "",
-      queryLoad: false,
-      acScratchRedirect: false,
-      acScratch: true,
-    });
-
     var groupBox = document.getElementById("groupCheckBox");
 
     if (groupBox.checked === true) {
@@ -278,11 +271,6 @@ class Query extends Component {
     window.open("https://www.google.com/search?q=" + search + "+pso2&tbm=isch");
   }
 
-  goUp() {
-    window.scrollTo(0, 0);
-    document.getElementById("itemSearch").value = "";
-  }
-
   render() {
     return (
       <React.Fragment>
@@ -304,7 +292,6 @@ class Query extends Component {
             placeholder="S T A R T   S E A R C H"
             className="item-input"
             onChange={this.searchItem}
-            onClick={this.goUp}
           />
           <div className="filter-container">
             <div className="form-check-label checkbox-text-scratch">
@@ -323,39 +310,42 @@ class Query extends Component {
             </div>
           </div>
 
-          {this.state.itemQuery.length > 0 ? (
+          {this.state.loadData === true ? (
             <Container fluid className="item-container">
               <InfiniteScroll
-                dataLength={this.state.filteredObjPage.length}
+                dataLength={
+                  this.state.loadData === true
+                    ? this.state.objPage.length
+                    : this.state.itemQuery.length > 0
+                    ? this.state.filteredObjPage.length
+                    : null
+                }
                 hasMore={true}
-                next={() => this.filterEffect(this.state.page + 1)}
+                next={() => {
+                  this.state.itemQuery.length > 0
+                    ? this.filterEffect(this.state.page + 1)
+                    : this.useEffect(this.state.page + 1);
+                }}
                 className="flex flex-wrap"
               >
-                {this.state.filteredObjPage.map((filteredItem, index) => (
-                  <div className="col-cus">
-                    <img
-                      onClick={() => this.redirect(filteredItem.itemTitleObj)}
-                      alt={filteredItem.itemTitleObj}
-                      className="item-image"
-                      src={filteredItem.itemImageObj}
-                    />
+                {this.state.itemQuery.length > 0
+                  ? this.state.filteredObjPage.map((filteredItem, index) => (
+                      <div className="col-cus">
+                        <img
+                          onClick={() =>
+                            this.redirect(filteredItem.itemTitleObj)
+                          }
+                          alt={filteredItem.itemTitleObj}
+                          className="item-image"
+                          src={filteredItem.itemImageObj}
+                        />
 
-                    <h1 className="item-title">{filteredItem.itemTitleObj}</h1>
-                  </div>
-                ))}
-              </InfiniteScroll>
-            </Container>
-          ) : (
-            <div>
-              {this.state.loadData === true ? (
-                <Container fluid className="item-container">
-                  <InfiniteScroll
-                    dataLength={this.state.objPage.length}
-                    hasMore={true}
-                    next={() => this.useEffect(this.state.page + 1)}
-                    className="flex flex-wrap"
-                  >
-                    {this.state.objPage.map((item, i) => (
+                        <h1 className="item-title">
+                          {filteredItem.itemTitleObj}
+                        </h1>
+                      </div>
+                    ))
+                  : this.state.objPage.map((item, i) => (
                       <div className="col-cus">
                         <img
                           onClick={() => this.redirect(item.itemTitleObj)}
@@ -367,66 +357,56 @@ class Query extends Component {
                         <h1 className="item-title">{item.itemTitleObj}</h1>
                       </div>
                     ))}
-                  </InfiniteScroll>
+              </InfiniteScroll>
+            </Container>
+          ) : (
+            <div>
+              {this.state.acScratch === true ? (
+                <Container fluid className="item-container">
+                  <Row>
+                    {this.state.groupObjs.map((scratch, i) => (
+                      <Col xs="6" md="6">
+                        <img
+                          alt={scratch.scratchTitleObj}
+                          onClick={() =>
+                            this.groupScratch(scratch.scratchTitleObj)
+                          }
+                          className="item-image"
+                          src={scratch.scratchImageObj}
+                        />
+
+                        <h1 className="item-title">
+                          {scratch.scratchTitleObj}
+                        </h1>
+                      </Col>
+                    ))}
+                  </Row>
                 </Container>
               ) : (
                 <div>
-                  {this.state.acScratch === true ? (
+                  {this.state.acScratchRedirect === true ? (
                     <Container fluid className="item-container">
                       <Row>
-                        {this.state.groupObjs.map((scratch, i) => (
-                          <Col
-                            xs="6"
-                            md="6"
-                            className={
-                              this.state.acScratchRedirect === false
-                                ? "override"
-                                : ""
-                            }
-                          >
+                        {this.state.groupItemObjs.map((group, i) => (
+                          <Col xs="6" md="3">
                             <img
-                              alt={scratch.scratchTitleObj}
                               onClick={() =>
-                                this.groupScratch(scratch.scratchTitleObj)
+                                this.redirect(group.scratchTitleObj)
                               }
+                              alt={group.scratchTitleObj}
                               className="item-image"
-                              src={scratch.scratchImageObj}
+                              src={group.scratchImageObj}
                             />
 
                             <h1 className="item-title">
-                              {scratch.scratchTitleObj}
+                              {group.scratchTitleObj}
                             </h1>
                           </Col>
                         ))}
                       </Row>
                     </Container>
                   ) : (
-                    <div>
-                      {this.state.acScratchRedirect === true ? (
-                        <Container fluid className="item-container">
-                          <Row>
-                            {this.state.groupItemObjs.map((group, i) => (
-                              <Col xs="6" md="3">
-                                <img
-                                  onClick={() =>
-                                    this.redirect(group.scratchTitleObj)
-                                  }
-                                  alt={group.scratchTitleObj}
-                                  className="item-image"
-                                  src={group.scratchImageObj}
-                                />
-
-                                <h1 className="item-title">
-                                  {group.scratchTitleObj}
-                                </h1>
-                              </Col>
-                            ))}
-                          </Row>
-                        </Container>
-                      ) : (
-                        <div>helloworld</div>
-                      )}
-                    </div>
+                    <div>helloworld</div>
                   )}
                 </div>
               )}

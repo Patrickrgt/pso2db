@@ -240,13 +240,6 @@ class Query extends Component {
   }
 
   scratchGroups() {
-    this.setState({
-      itemQuery: "",
-      queryLoad: false,
-      acScratchRedirect: false,
-      acScratch: true,
-    });
-
     var groupBox = document.getElementById("groupCheckBox");
 
     if (groupBox.checked === true) {
@@ -278,11 +271,6 @@ class Query extends Component {
     window.open("https://www.google.com/search?q=" + search + "+pso2&tbm=isch");
   }
 
-  goUp() {
-    window.scrollTo(0, 0);
-    document.getElementById("itemSearch").value = "";
-  }
-
   render() {
     return (
       <React.Fragment>
@@ -304,7 +292,6 @@ class Query extends Component {
             placeholder="S T A R T   S E A R C H"
             className="item-input"
             onChange={this.searchItem}
-            onClick={this.goUp}
           />
           <div className="filter-container">
             <div className="form-check-label checkbox-text-scratch">
@@ -375,15 +362,7 @@ class Query extends Component {
                     <Container fluid className="item-container">
                       <Row>
                         {this.state.groupObjs.map((scratch, i) => (
-                          <Col
-                            xs="6"
-                            md="6"
-                            className={
-                              this.state.acScratchRedirect === false
-                                ? "override"
-                                : ""
-                            }
-                          >
+                          <Col xs="6" md="6">
                             <img
                               alt={scratch.scratchTitleObj}
                               onClick={() =>

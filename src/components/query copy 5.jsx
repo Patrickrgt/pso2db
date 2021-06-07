@@ -56,12 +56,17 @@ class Query extends Component {
             }
           }
 
-          this.setState({
-            scratchItem: {
-              itemTitle: nestedItemTitles,
-              itemImage: nestedItemImages,
+          this.setState(
+            {
+              scratchItem: {
+                itemTitle: nestedItemTitles,
+                itemImage: nestedItemImages,
+              },
             },
-          });
+            () => {
+              console.log(this.state.scratchItem);
+            }
+          );
         });
       });
 
@@ -75,6 +80,7 @@ class Query extends Component {
           scratchTitles.push(Object.keys(data[items]));
           scratchImages.push(Object.values(data[items]));
         }
+        // console.log(scratchImages[0]);
 
         this.setState(
           {
@@ -86,6 +92,7 @@ class Query extends Component {
             //   scratchImage: nestedItemImages,
           },
           () => {
+            console.log(this.state.scratchGroup);
             this.createObj();
           }
         );
@@ -107,9 +114,11 @@ class Query extends Component {
       groupObj.push(obj);
     }
 
+    console.log(groupObj);
+
     // Scratch Items
     const titleLength = this.state.scratchItem.itemTitle;
-
+    console.log(titleLength);
     const imgLength = this.state.scratchItem.itemImage;
 
     let itemObj = [];
@@ -121,7 +130,7 @@ class Query extends Component {
       obj["itemImageObj"] = image;
       itemObj.push(obj);
     }
-
+    console.log(itemObj);
     this.setState(
       {
         groupObjs: groupObj,
@@ -134,9 +143,15 @@ class Query extends Component {
             splitObjs: this.splitArray(this.state.itemObjects, 24),
           },
           () => {
-            this.setState({
-              objPage: this.state.splitObjs[0],
-            });
+            this.setState(
+              {
+                objPage: this.state.splitObjs[0],
+              },
+              () => {
+                console.log(this.state.splitObjs);
+                console.log(this.state.objPage);
+              }
+            );
           }
         );
       }
@@ -148,10 +163,16 @@ class Query extends Component {
     if (this.state.splitObjs.length === newPage) {
       return;
     } else {
-      await this.setState({
-        page: newPage,
-        objPage: [...this.state.objPage, ...this.state.splitObjs[page]],
-      });
+      await this.setState(
+        {
+          page: newPage,
+          objPage: [...this.state.objPage, ...this.state.splitObjs[page]],
+        },
+        () => {
+          console.log(this.state.splitObjs.length);
+          console.log(this.state.page);
+        }
+      );
     }
   }
 
@@ -163,21 +184,33 @@ class Query extends Component {
     ) {
       return;
     } else {
-      await this.setState({
-        page: newPage,
-        filteredObjPage: [
-          ...this.state.filteredObjPage,
-          ...this.state.filteredSplitObjs[page],
-        ],
-      });
+      await this.setState(
+        {
+          page: newPage,
+          filteredObjPage: [
+            ...this.state.filteredObjPage,
+            ...this.state.filteredSplitObjs[page],
+          ],
+        },
+        () => {
+          console.log(this.state.filteredObjPage.length);
+          console.log(this.state.page);
+        }
+      );
     }
   }
 
   searchItem = async (e) => {
-    this.setState({
-      itemQuery: e.target.value.toLowerCase(),
-      queryLoad: true,
-    });
+    this.setState(
+      {
+        itemQuery: e.target.value.toLowerCase(),
+        queryLoad: true,
+      },
+      () => {
+        console.log(this.state.splitObjs.length);
+        console.log(this.state.page);
+      }
+    );
 
     this.setState(
       {
@@ -190,15 +223,23 @@ class Query extends Component {
       },
       () => {
         if (this.state.filteredSplitObjs[0] !== undefined) {
-          this.setState({
-            filteredObjPage: this.state.filteredSplitObjs[0],
-          });
+          this.setState(
+            {
+              filteredObjPage: this.state.filteredSplitObjs[0],
+            },
+            () => {
+              console.log(this.state.splitObjs);
+              console.log(this.state.objPage);
+            }
+          );
         } else return;
       }
     );
   };
 
   async groupScratch(scratch) {
+    console.log(scratch);
+
     this.setState(
       {
         queryLoad: true,
@@ -208,6 +249,7 @@ class Query extends Component {
     );
 
     const query = scratch.toString();
+    console.log(query);
 
     await db
       .collection("items")
@@ -232,21 +274,19 @@ class Query extends Component {
       groupItemObj.push(obj);
     }
 
-    this.setState({
-      groupItemObjs: groupItemObj,
-      acScratchRedirect: true,
-      acScratch: false,
-    });
+    this.setState(
+      {
+        groupItemObjs: groupItemObj,
+        acScratchRedirect: true,
+        acScratch: false,
+      },
+      () => {
+        console.log(this.state.groupItemObjs);
+      }
+    );
   }
 
   scratchGroups() {
-    this.setState({
-      itemQuery: "",
-      queryLoad: false,
-      acScratchRedirect: false,
-      acScratch: true,
-    });
-
     var groupBox = document.getElementById("groupCheckBox");
 
     if (groupBox.checked === true) {
@@ -254,6 +294,7 @@ class Query extends Component {
         loadData: false,
         acScratch: true,
       });
+ 
     } else {
       this.setState({
         loadData: true,
@@ -270,17 +311,6 @@ class Query extends Component {
       chunks.push(arr.slice(i, (i += len)));
     }
     return chunks;
-  }
-
-  redirect(item) {
-    var search = item;
-    console.log(search);
-    window.open("https://www.google.com/search?q=" + search + "+pso2&tbm=isch");
-  }
-
-  goUp() {
-    window.scrollTo(0, 0);
-    document.getElementById("itemSearch").value = "";
   }
 
   render() {
@@ -304,7 +334,6 @@ class Query extends Component {
             placeholder="S T A R T   S E A R C H"
             className="item-input"
             onChange={this.searchItem}
-            onClick={this.goUp}
           />
           <div className="filter-container">
             <div className="form-check-label checkbox-text-scratch">
@@ -334,7 +363,6 @@ class Query extends Component {
                 {this.state.filteredObjPage.map((filteredItem, index) => (
                   <div className="col-cus">
                     <img
-                      onClick={() => this.redirect(filteredItem.itemTitleObj)}
                       alt={filteredItem.itemTitleObj}
                       className="item-image"
                       src={filteredItem.itemImageObj}
@@ -358,7 +386,6 @@ class Query extends Component {
                     {this.state.objPage.map((item, i) => (
                       <div className="col-cus">
                         <img
-                          onClick={() => this.redirect(item.itemTitleObj)}
                           alt={item.itemTitleObj}
                           className="item-image"
                           src={item.itemImageObj}
@@ -375,15 +402,7 @@ class Query extends Component {
                     <Container fluid className="item-container">
                       <Row>
                         {this.state.groupObjs.map((scratch, i) => (
-                          <Col
-                            xs="6"
-                            md="6"
-                            className={
-                              this.state.acScratchRedirect === false
-                                ? "override"
-                                : ""
-                            }
-                          >
+                          <Col xs="6" md="6">
                             <img
                               alt={scratch.scratchTitleObj}
                               onClick={() =>
@@ -408,9 +427,6 @@ class Query extends Component {
                             {this.state.groupItemObjs.map((group, i) => (
                               <Col xs="6" md="3">
                                 <img
-                                  onClick={() =>
-                                    this.redirect(group.scratchTitleObj)
-                                  }
                                   alt={group.scratchTitleObj}
                                   className="item-image"
                                   src={group.scratchImageObj}

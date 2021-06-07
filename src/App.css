@@ -204,3 +204,57 @@ img {
   max-width: 25%;
   min-width: 25%;
 }
+
+@media (max-width: 540px) {
+  .col-cus {
+    max-width: 50%;
+    min-width: 50%;
+  }
+
+  .item-title {
+    font-size: 5vw;
+  }
+
+  .item-container {
+    padding-top: 15vw;
+  }
+
+  .checkbox-text-styling {
+    font-size: 5vw;
+  }
+
+  .logo-img {
+    display: none;
+  }
+
+  .logo-container {
+    display: none;
+  }
+
+  .logo-text {
+    font-size: 5vw;
+  }
+
+  .search-container {
+    background-color: #231815;
+    color: #fff;
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .item-input {
+    font-size: 5vw;
+    top: 0;
+    height: 6vw;
+  }
+
+  .checkbox-text-scratch {
+    top: 6vw;
+    left: 0;
+  }
+
+  .override {
+    flex: none !important;
+    max-width: 100% !important;
+  }
+}
